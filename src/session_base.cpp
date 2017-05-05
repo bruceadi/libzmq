@@ -400,7 +400,8 @@ void zmq::session_base_t::process_attach (i_engine *engine_)
         //  Remember the local end of the pipe.
         zmq_assert (!pipe);
         pipe = pipes [0];
-
+        //avoid block sending when peer has been disconnected
+        pipes[1]->set_nodelay();
         //  Ask socket to plug into the remote end of the pipe.
         send_bind (socket, pipes [1]);
     }
